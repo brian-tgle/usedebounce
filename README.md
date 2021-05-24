@@ -1,4 +1,4 @@
-# usedebounce
+# useDebounce
 
 > Made with create-react-library
 
@@ -13,15 +13,31 @@ npm install --save usedebounce
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
+import useDebounce from 'usedebounce'
 
-import MyComponent from 'usedebounce'
-import 'usedebounce/dist/index.css'
+const SearchComponent = () => {
+  const [state, setState] = useState({searchString: ''});
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
+  const debouncedSearchString = useDebounce(state.searchString, 500);
+
+  useEffect(() => {
+      // do whatever you want with debouncedTitle
+      // Ex: you trigger search when debouncedTitle changed
+      console.log('debouncedSearchString', debouncedSearchString);
+  }, [debouncedSearchString]);
+  
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ searchString: event?.target?.value});
+  };
+
+  return (
+    <>
+      <input type="text" placeholder="Search..." onChange={handleChange} />
+      <p>Debounced value: {debouncedSearchString}</p>
+      <p>Pure value: {state.searchString}</p>
+    </>
+  );
 }
 ```
 
